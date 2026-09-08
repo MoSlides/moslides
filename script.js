@@ -1,11 +1,11 @@
 // تحديد المشاريع المتاحة وصيغها بدقة لمنع طلبات 404 والتحميل البطائ
 const projectsConfig = [
-    { folder: 'project1', slides: 15, ext: 'png' },
-    { folder: 'project2', slides: 15, ext: 'png' },
-    { folder: 'project3', slides: 15, ext: 'png' },
-    { folder: 'project4', slides: 15, ext: 'png' },
-    { folder: 'project5', slides: 15, ext: 'png' },
-    { folder: 'project6', slides: 15, ext: 'png' }
+    { folder: 'project1', slides: 8, ext: 'PNG' },
+    { folder: 'project2', slides: 10, ext: 'PNG' },
+    { folder: 'project3', slides: 8, ext: 'PNG' },
+    { folder: 'project4', slides: 8, ext: 'PNG' },
+    { folder: 'project5', slides: 10, ext: 'PNG' },
+    { folder: 'project6', slides: 5, ext: 'PNG' }
 ];
 
 // عدد صور الموك أب وامتدادها كما هو في المجلد لديك (PNG)
