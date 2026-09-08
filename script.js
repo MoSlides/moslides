@@ -1,7 +1,7 @@
 const maxProjectsToCheck = 15; // أقصى عدد من المجلدات التي سيتم فحصها (project1 .. project15)
 const maxSlidesPerProject = 15;
 const maxMockupsCount = 10;
-const imageExtensions = ['png', 'jpg', 'jpeg', 'webp'];
+const imageExtensions = ['png', 'jpg', 'jpeg', 'webp', 'PNG', 'JPG', 'JPEG', 'WEBP'];
 
 document.addEventListener('DOMContentLoaded', () => {
     autoDiscoverAndInitMarquee();
