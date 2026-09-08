@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>MoSlides Studio | استوديو تصميم العروض التقديمية والشرائح الاستثمارية</title>
+    <meta name="description" content="استوديو MoSlides متخصص في تصميم وتطوير العروض التقديمية الاحترافية والشرائح الاستثمارية (Pitch Decks) وإعادة رسم البيانات بصرياً بأعلى معايير الجودة.">
+    <meta name="keywords" content="تصميم عروض تقديمية, Pitch Deck, PowerPoint Expert, Presentation Design, إعادة تصميم الشرائح, Redesign, MoSlides">
+    <meta name="author" content="MoSlides Studio">
+    <meta name="robots" content="index, follow">
+
+    <!-- أيقونة الموقع -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <!-- كروت التواصل الاجتماعي -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MoSlides Studio | تصميم عروض تقديمية مذهلة">
+    <meta property="og:description" content="تحويل الأفكار إلى شرائح بصرية مذهلة وشرائح استثمارية لجذب المستثمرين.">
+    <meta property="og:image" content="logov2.png">
+    <meta property="og:url" content="https://moslides.github.io/">
+
+    <!-- مكتبة الأيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ملف التنسيق -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <!-- روابط التواصل الاجتماعي بداخل الـ NAV -->
+            <div class="social-links">
+                <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook" class="social-icon facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://instagram.com/YOUR_ACCOUNT" target="_blank" aria-label="Instagram" class="social-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+
+            <!-- الشعار -->
+            <div class="logo-container">
+                <img src="logo.png" alt="MoSlides Logo">
+                <span class="logo-text">MoSlides Studio</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- قسم الترويج (Hero Banner) -->
+    <section class="promo-banner">
+        <div class="banner-circle-shape"></div>
+
+        <div class="banner-container">
+            <div class="banner-content">
+                <h1>تحويل الأفكار إلى شرائح بصرية مذهلة</h1>
+                <p class="subtitle">متخصص في تصميم وتطوير العروض التقديمية والشرائح الاستثمارية (Pitch Decks) وفق أعلى المعايير العالمية.</p>
+                
+                <div class="tags-container">
+                    <span class="tag">PowerPoint Expert</span>
+                    <span class="tag">Pitch Decks</span>
+                    <span class="tag">Data Visualization</span>
+                </div>
+
+                <a href="#contact" class="btn-order">اطلب الآن</a>
+            </div>
+
+            <div class="banner-image">
+                <img src="Presentation Design.png" alt="تصميم عروض باوربوينت">
+            </div>
+        </div>
+    </section>
+
+    <section class="marquee-section">
+        <h2 class="marquee-title">معرض الشرائح والتصاميم</h2>
+        <div id="projectsMarqueeContainer"></div>
+    </section>
+
+    <div class="container">
+        <div class="services-grid">
+            <div class="service-box">
+                <h3>عروض استثمارية Pitch Decks</h3>
+                <p>تصميم شرائح ممتازة لجذب المستثمرين مع تركيز كامل على صياغة الأرقام والبيانات.</p>
+            </div>
+            <div class="service-box">
+                <h3>إعادة تصميم الشرائح Redesign</h3>
+                <p>تنسيق وتنظيف العروض المكدسة بالنصوص وتحويلها لشكل حديث وجذاب.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم نماذج العرض Mockups -->
+    <section class="mockups-section">
+        <div class="container">
+            <h2 class="section-title">نماذج العرض الاحترافية</h2>
+            <p class="section-subtitle">معاينة واقعية لكيفية تبدو العروض التقديمية على الشاشات والأجهزة المختلفة</p>
+            
+            <div class="mockups-grid" id="mockupsGrid"></div>
+        </div>
+    </section>
+
+    <!-- Modal المكبر -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImg" src="" alt="Enlarged Slide">
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; MoSlides - صُمم خصيصاً لعرض الأعمال</p>
+        <div class="footer-social">
+            <a href="https://facebook.com/YOUR_PAGE" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/YOUR_ACCOUNT" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
