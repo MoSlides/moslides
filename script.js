@@ -110,7 +110,7 @@ async function findValidMockupPath(index) {
     const nameFormats = [`Slide${index}`, `mockup${index}`, `Mockup${index}`, `${index}`];
     for (const name of nameFormats) {
         for (const ext of imageExtensions) {
-            const path = `mockup/${name}.${ext}`;
+            const path = `./mockup/${name}.${ext}`;
             const exists = await checkImageExists(path);
             if (exists) return path;
         }
@@ -142,7 +142,7 @@ function checkImageExists(path) {
 
 async function findValidImagePath(folder, index) {
     for (const ext of imageExtensions) {
-        const path = `projects/${folder}/Slide${index}.${ext}`;
+        const path = `./projects/${folder}/Slide${index}.${ext}`;
         const exists = await checkImageExists(path);
         if (exists) {
             return path;
