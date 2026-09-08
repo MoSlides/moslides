@@ -1,15 +1,23 @@
-const maxProjectsToCheck = 15; // أقصى عدد من المجلدات التي سيتم فحصها (project1 .. project15)
-const maxSlidesPerProject = 15;
-const maxMockupsCount = 10;
-const imageExtensions = ['png', 'jpg', 'jpeg', 'webp', 'PNG', 'JPG', 'JPEG', 'WEBP'];
+// تحديد المشاريع المتاحة وصيغها بدقة لمنع طلبات 404 والتحميل البطائ
+const projectsConfig = [
+    { folder: 'project1', slides: 15, ext: 'png' },
+    { folder: 'project2', slides: 15, ext: 'png' },
+    { folder: 'project3', slides: 15, ext: 'png' },
+    { folder: 'project4', slides: 15, ext: 'png' },
+    { folder: 'project5', slides: 15, ext: 'png' },
+    { folder: 'project6', slides: 15, ext: 'png' }
+];
+
+// عدد صور الموك أب وامتدادها كما هو في المجلد لديك (PNG)
+const mockupsCount = 5;
+const mockupExt = 'PNG'; // بحروف كبيرة لأنها مرفوعة PNG على GitHub
 
 document.addEventListener('DOMContentLoaded', () => {
-    autoDiscoverAndInitMarquee();
+    initMarquee();
     loadMockups();
     setupGlobalImageClick();
 });
 
-// خوارزمية الخلط العشوائي للعناصر
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -18,45 +26,27 @@ function shuffleArray(array) {
     return array;
 }
 
-// الكشف التلقائي واختيار مشروعين عشوائياً
-async function autoDiscoverAndInitMarquee() {
+// عرض مشروعين عشوائياً فوراً وبشكل لحظي
+function initMarquee() {
     const mainContainer = document.getElementById('projectsMarqueeContainer');
-    if (!mainContainer) return;
+    if (!mainContainer || projectsConfig.length === 0) return;
 
-    const availableProjects = [];
+    // اختيار مشروعين عشوائياً
+    const selectedProjects = shuffleArray([...projectsConfig]).slice(0, 2);
 
-    // 1. فحص مجلدات المشاريع الموجودة التي تحتوي على صور بالفعل
-    for (let p = 1; p <= maxProjectsToCheck; p++) {
-        const folderName = `project${p}`;
-        // التأكد من وجود أول صورة في المجلد لمعرفة هل المشروع متوفر أم لا
-        const firstSlideExists = await findValidImagePath(folderName, 1);
-        if (firstSlideExists) {
-            availableProjects.push(folderName);
-        }
-    }
-
-    if (availableProjects.length === 0) return;
-
-    // 2. تخليط المشاريع المتاحة واختيار 2 منها فقط عشوائياً
-    const selectedProjects = shuffleArray([...availableProjects]).slice(0, 2);
-
-    // 3. إنشاء شريط الـ Marquee للمشروعين المختارين
-    for (const folder of selectedProjects) {
+    for (const project of selectedProjects) {
         const projectCards = [];
 
-        for (let i = 1; i <= maxSlidesPerProject; i++) {
-            const foundPath = await findValidImagePath(folder, i);
-            if (foundPath) {
-                const card = document.createElement('div');
-                card.className = 'slide-card';
+        for (let i = 1; i <= project.slides; i++) {
+            const card = document.createElement('div');
+            card.className = 'slide-card';
 
-                const img = document.createElement('img');
-                img.src = foundPath;
-                img.alt = `${folder} - Slide ${i}`;
+            const img = document.createElement('img');
+            img.src = `projects/${project.folder}/Slide${i}.${project.ext}`;
+            img.alt = `${project.folder} - Slide ${i}`;
 
-                card.appendChild(img);
-                projectCards.push(card);
-            }
+            card.appendChild(img);
+            projectCards.push(card);
         }
 
         if (projectCards.length > 0) {
@@ -85,53 +75,24 @@ async function autoDiscoverAndInitMarquee() {
     }
 }
 
-// اكتشاف وتحميل صور الـ Mockup تلقائياً
-async function loadMockups() {
+// تحميل صور الموك أب فوراً
+function loadMockups() {
     const mockupsGrid = document.getElementById('mockupsGrid');
     if (!mockupsGrid) return;
 
-    for (let i = 1; i <= maxMockupsCount; i++) {
-        let foundPath = await findValidMockupPath(i);
-        if (foundPath) {
-            const mockupCard = document.createElement('div');
-            mockupCard.className = 'mockup-card slide-card';
+    for (let i = 1; i <= mockupsCount; i++) {
+        const mockupCard = document.createElement('div');
+        mockupCard.className = 'mockup-card slide-card';
 
-            const img = document.createElement('img');
-            img.src = foundPath;
-            img.alt = `Mockup ${i}`;
+        const img = document.createElement('img');
+        img.src = `mockup/Slide${i}.${mockupExt}`;
+        img.alt = `Mockup ${i}`;
 
-            mockupCard.appendChild(img);
-            mockupsGrid.appendChild(mockupCard);
-        }
+        mockupCard.appendChild(img);
+        mockupsGrid.appendChild(mockupCard);
     }
 }
 
-async function findValidMockupPath(index) {
-    const nameFormats = [`Slide${index}`, `slide${index}`, `mockup${index}`, `${index}`];
-    const popularExtensions = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'webp'];
-
-    const promises = [];
-
-    for (const name of nameFormats) {
-        for (const ext of popularExtensions) {
-            const path = `mockup/${name}.${ext}`;
-            promises.push(
-                checkImageExists(path).then(exists => {
-                    if (exists) return path;
-                    throw new Error('Not found');
-                })
-            );
-        }
-    }
-
-    try {
-        return await Promise.any(promises);
-    } catch {
-        return null;
-    }
-}
-
-// تفويض حدث النقر لجميع الصور (الشريط المتحرك والموك أب)
 function setupGlobalImageClick() {
     document.addEventListener('click', (e) => {
         const card = e.target.closest('.slide-card');
@@ -142,36 +103,6 @@ function setupGlobalImageClick() {
             }
         }
     });
-}
-
-function checkImageExists(path) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = path;
-    });
-}
-
-async function findValidImagePath(folder, index) {
-    // الترتيب حسب الأكثر استخداماً لديك لتقليل أخطاء 404
-    const popularExtensions = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'webp'];
-    
-    // فحص جميع الامتدادات في نفس اللحظة بالتوازي
-    const promises = popularExtensions.map(ext => {
-        const path = `projects/${folder}/Slide${index}.${ext}`;
-        return checkImageExists(path).then(exists => {
-            if (exists) return path;
-            throw new Error('Not found');
-        });
-    });
-
-    try {
-        // يعيد أول مسار صحيح ينجح فوراً بدون انتظار البقية
-        return await Promise.any(promises);
-    } catch {
-        return null;
-    }
 }
 
 function openModal(imgSrc) {
