@@ -107,15 +107,28 @@ async function loadMockups() {
 }
 
 async function findValidMockupPath(index) {
-    const nameFormats = [`Slide${index}`, `mockup${index}`, `Mockup${index}`, `${index}`];
+    const nameFormats = [`Slide${index}`, `slide${index}`, `mockup${index}`, `${index}`];
+    const popularExtensions = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'webp'];
+
+    const promises = [];
+
     for (const name of nameFormats) {
-        for (const ext of imageExtensions) {
-            const path = `./mockup/${name}.${ext}`;
-            const exists = await checkImageExists(path);
-            if (exists) return path;
+        for (const ext of popularExtensions) {
+            const path = `mockup/${name}.${ext}`;
+            promises.push(
+                checkImageExists(path).then(exists => {
+                    if (exists) return path;
+                    throw new Error('Not found');
+                })
+            );
         }
     }
-    return null;
+
+    try {
+        return await Promise.any(promises);
+    } catch {
+        return null;
+    }
 }
 
 // تفويض حدث النقر لجميع الصور (الشريط المتحرك والموك أب)
@@ -141,14 +154,24 @@ function checkImageExists(path) {
 }
 
 async function findValidImagePath(folder, index) {
-    for (const ext of imageExtensions) {
-        const path = `./projects/${folder}/Slide${index}.${ext}`;
-        const exists = await checkImageExists(path);
-        if (exists) {
-            return path;
-        }
+    // الترتيب حسب الأكثر استخداماً لديك لتقليل أخطاء 404
+    const popularExtensions = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'webp'];
+    
+    // فحص جميع الامتدادات في نفس اللحظة بالتوازي
+    const promises = popularExtensions.map(ext => {
+        const path = `projects/${folder}/Slide${index}.${ext}`;
+        return checkImageExists(path).then(exists => {
+            if (exists) return path;
+            throw new Error('Not found');
+        });
+    });
+
+    try {
+        // يعيد أول مسار صحيح ينجح فوراً بدون انتظار البقية
+        return await Promise.any(promises);
+    } catch {
+        return null;
     }
-    return null;
 }
 
 function openModal(imgSrc) {
